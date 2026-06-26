@@ -1,7 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const hostname = window.location.hostname;
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || `http://${hostname}:9999`;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || window.location.origin;
 
 let socket: Socket | null = null;
 
