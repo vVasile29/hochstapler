@@ -30,15 +30,15 @@ Build and run as a single container that serves the app and WebSocket on one por
 
 ```bash
 docker build -t hochstapler:latest .
-docker run -d -p 3001:3001 --restart unless-stopped --name hochstapler hochstapler:latest
+docker run -d -p 9999:9999 --restart unless-stopped --name hochstapler hochstapler:latest
 ```
 
-Then point your reverse proxy at `http://<host>:3001`.
+Then point your reverse proxy at `http://<host>:9999`.
 
 ## Project Structure
 
 ```
-server/              Node.js + Socket.IO backend (port 3001)
+server/              Node.js + Socket.IO backend (port 9999)
   index.ts           Express server with static file serving
   src/
     types.ts         Shared TypeScript types

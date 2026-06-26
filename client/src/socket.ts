@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 
 const hostname = window.location.hostname;
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || `http://${hostname}:3001`;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || `http://${hostname}:9999`;
 
 let socket: Socket | null = null;
 

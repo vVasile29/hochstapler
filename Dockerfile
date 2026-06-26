@@ -20,7 +20,7 @@ COPY server/ ./server/
 # Copy built client
 COPY --from=client-builder /app/client/dist ./client/dist
 
-EXPOSE 3001
+EXPOSE 9999
 
 WORKDIR /app/server
 CMD ["npx", "tsx", "index.ts"]
