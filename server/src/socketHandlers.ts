@@ -333,6 +333,23 @@ export function registerHandlers(io: Server, socket: Socket): void {
     io.to(room.code).emit('room_update', getRoomUpdatePayload(room));
   });
 
+  socket.on('leave_room', () => {
+    const ctx = getRoomBySocketId(socket.id);
+    if (!ctx) return;
+    const { room, player } = ctx;
+    const isHost = room.hostId === player.id;
+
+    if (isHost) {
+      io.to(room.code).emit('room_closed', {});
+      destroyRoom(room.code);
+    } else {
+      socket.leave(room.code);
+      removePlayer(room, player.id);
+      io.to(room.code).emit('room_update', getRoomUpdatePayload(room));
+      socket.emit('left_room', {});
+    }
+  });
+
   socket.on('disconnect', () => {
     const ctx = getRoomBySocketId(socket.id);
     if (!ctx) return;

@@ -130,6 +130,14 @@ export default function App() {
       setSecretWord(undefined);
     });
 
+    socket.on('left_room', () => {
+      goHome();
+    });
+
+    socket.on('room_closed', () => {
+      goHome();
+    });
+
     socket.on('connect', () => {
       const stored = localStorage.getItem('hochstapler_session');
       if (stored && !hasRejoined.current) {
@@ -154,8 +162,23 @@ export default function App() {
       socket.off('vote_progress');
       socket.off('game_result');
       socket.off('returned_to_lobby');
+      socket.off('left_room');
+      socket.off('room_closed');
     };
   }, []);
+
+  function goHome() {
+    setScreen({ name: 'HOME' });
+    setMyId(null);
+    setHostId('');
+    setRoomCode('');
+    setPlayers([]);
+    setRole(null);
+    setSecretWord(undefined);
+    setGameResult(null);
+    setError(null);
+    localStorage.removeItem('hochstapler_session');
+  }
 
   const handleEmit = useCallback((event: string, data?: any) => {
     const socket = getSocket();
@@ -163,6 +186,11 @@ export default function App() {
       socket.emit(event, data);
     }
   }, []);
+
+  const handleLeaveRoom = useCallback(() => {
+    handleEmit('leave_room');
+    goHome();
+  }, [handleEmit]);
 
   const handleCreate = useCallback((playerName: string) => {
     setError(null);
@@ -214,6 +242,7 @@ export default function App() {
           onStartGame={() => handleEmit('start_game')}
           onKickPlayer={(pid) => handleEmit('kick_player', { playerId: pid })}
           onUpdateSettings={(s) => handleEmit('update_settings', s)}
+          onLeaveRoom={handleLeaveRoom}
         />
       </div>
     );

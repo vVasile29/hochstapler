@@ -12,6 +12,7 @@ interface LobbyProps {
   onStartGame: () => void;
   onKickPlayer: (playerId: string) => void;
   onUpdateSettings: (s: Partial<Settings>) => void;
+  onLeaveRoom: () => void;
 }
 
 export default function Lobby({
@@ -25,6 +26,7 @@ export default function Lobby({
   onStartGame,
   onKickPlayer,
   onUpdateSettings,
+  onLeaveRoom,
 }: LobbyProps) {
   const isHost = myId === hostId;
   const me = players.find((p) => p.id === myId);
@@ -127,6 +129,10 @@ export default function Lobby({
           Waiting for host to start the game...
         </p>
       )}
+
+      <button className="btn-small btn-secondary" onClick={onLeaveRoom} style={{ marginTop: 8 }}>
+        Leave Room
+      </button>
     </div>
   );
 }
